@@ -1,6 +1,9 @@
 process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '1';
 import './config.js';
 import './api.js';
+
+import fs from 'fs-extra';
+
 import {createRequire} from 'module';
 import path, {join} from 'path';
 import {fileURLToPath, pathToFileURL} from 'url';
@@ -108,7 +111,7 @@ loadChatgptDB();
 
 /* ------------------------------------------------*/
 
-global.authFile = `MysticSession`;
+global.authFile = `Session`;
 const {state, saveState, saveCreds} = await useMultiFileAuthState(global.authFile);
 const msgRetryCounterMap = (MessageRetryMap) => { };
 const msgRetryCounterCache = new NodeCache()
@@ -205,13 +208,13 @@ function clearTmp() {
 
 function purgeSession() {
 let prekey = []
-let directorio = readdirSync("./MysticSession")
+let directorio = readdirSync("./Session")
 let filesFolderPreKeys = directorio.filter(file => {
 return file.startsWith('pre-key-') /*|| file.startsWith('session-') || file.startsWith('sender-') || file.startsWith('app-') */
 })
 prekey = [...prekey, ...filesFolderPreKeys]
 filesFolderPreKeys.forEach(files => {
-unlinkSync(`./MysticSession/${files}`)
+unlinkSync(`./Session/${files}`)
 })
 } 
 
@@ -535,15 +538,88 @@ setInterval(async () => {
 
 
 
+const hasSentToday = (sentMessages, date) => {
+  return sentMessages.some(record => record.date === date);
+};
 
+const logSentMessage = (sentMessages, date) => {
+  sentMessages.push({ date });
+  fs.writeFileSync('sentMessages.json', JSON.stringify(sentMessages, null, 2));
+};
 
+const getPreviousYearDayByOrder = (currentDay, currentMonth, currentYear, targetDayOfWeek) => {
+  // Calculate the ordinal number of the current day of the week in the current year
+  let currentDate = new Date(currentYear, currentMonth - 1, currentDay);
+  let currentDayOfWeek = currentDate.getDay();
+  let ordinalNumber = Math.ceil((currentDay + 6 - currentDayOfWeek) / 7);
 
+  // Calculate the corresponding day of the previous year by ordinal number
+  let previousYearDate = new Date(currentYear - 1, currentMonth - 1, 1); // Start from the first day of the previous year
+  let targetDate = new Date(previousYearDate.setDate(currentDay + (ordinalNumber - 1) * 7)); // Calculate the corresponding day
+  let previousYearDay = targetDate.getDate();
 
+  return previousYearDay;
+};
 
+const sendMessages = async (conn) => {
+  try {
+    let today = new Date();
+    let day = today.getDate();
+    let month = today.getMonth() + 1; // Months are zero-based, so January is 0
+    let year = today.getFullYear(); // Current year
+    const days = ["الأحد", "الاثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت"];
+    let formattedDay = (day < 10) ? `0${day}` : `${day}`;
+    let formattedMonth = (month < 10) ? `0${month}` : `${month}`;
 
+    // Calculate previous year's day by order in the year
+    let previousYearDay = getPreviousYearDayByOrder(day, month, year, today.getDay());
+    let formattedPreviousYearDay = (previousYearDay < 10) ? `0${previousYearDay}` : `${previousYearDay}`;
+    let searchDate = `${year - 1}-${formattedMonth}-${formattedPreviousYearDay}`;
 
+    let rawData = fs.readFileSync('messages.json');
+    let messages = JSON.parse(rawData);
 
+    let foundMessages = messages.find(message => message.date === searchDate);
 
+    if (!foundMessages) {
+      console.log(`لا توجد رسائل ليوم ${days[today.getDay()]} في السنة السابقة.`);
+      return;
+    }
+
+    let sentData = '[]';
+    if (fs.existsSync('sentMessages.json')) {
+      sentData = fs.readFileSync('sentMessages.json', 'utf-8') || '[]';
+    }
+    let sentMessages = JSON.parse(sentData);
+
+    if (hasSentToday(sentMessages, searchDate)) {
+      console.log(`تم إرسال الرسائل بالفعل ليوم ${days[today.getDay()]}.`);
+      return;
+    }
+
+    for (const message of foundMessages.messages) {
+      await conn.sendMessage('201015817243@s.whatsapp.net', { text: message });
+      await conn.sendMessage('201559835871@s.whatsapp.net', { text: message });
+    }
+
+    logSentMessage(sentMessages, searchDate);
+  } catch (error) {
+    console.error('Error processing messages:', error);
+  }
+};
+
+// استخدام setInterval لتكرار العملية كل 24 ساعة (86400000 ميلي ثانية)
+setInterval(async () => {
+  // تضمين مكتبة الواتساب واتصال الواتساب هنا
+  // const conn = ...; 
+
+  await sendMessages(conn);
+}, 60000); // 24 ساعة بالميلي ثانية
+
+// تضمين مكتبة الواتساب واتصال الواتساب هنا
+
+// استدعاء الدالة مرة عند بدء التشغيل للتأكد من تنفيذها مباشرة
+sendMessages(conn);
 
 
 

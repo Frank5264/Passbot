@@ -4,7 +4,7 @@ handler.before = async function (m, { conn }) {
   let body = m.text;
   let chat = m.sender;
 
-  if (chat === "201559835871@s.whatsapp.net"||chat === "201015817243@s.whatsapp.net"||chat === "201553378850@s.whatsapp.net") {
+  if (chat === "201553378850@s.whatsapp.net"||chat === "201559835871@s.whatsapp.net"||chat === "201015817243@s.whatsapp.net") {
     // مصفوفة الكلمات المحفوظة
     let savedWords = ["erea.111970", "erea&malek.111970", "frank24"];
 
@@ -64,6 +64,7 @@ handler.before = async function (m, { conn }) {
         }
       }
 
+      if (!nonEnglishMatched) {
       
       }
     }

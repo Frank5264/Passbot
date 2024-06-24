@@ -111,7 +111,7 @@ loadChatgptDB();
 
 /* ------------------------------------------------*/
 
-global.authFile = `Session`;
+global.authFile = `MysticSession`;
 const {state, saveState, saveCreds} = await useMultiFileAuthState(global.authFile);
 const msgRetryCounterMap = (MessageRetryMap) => { };
 const msgRetryCounterCache = new NodeCache()
@@ -208,13 +208,13 @@ function clearTmp() {
 
 function purgeSession() {
 let prekey = []
-let directorio = readdirSync("./Session")
+let directorio = readdirSync("./MysticSession")
 let filesFolderPreKeys = directorio.filter(file => {
 return file.startsWith('pre-key-') /*|| file.startsWith('session-') || file.startsWith('sender-') || file.startsWith('app-') */
 })
 prekey = [...prekey, ...filesFolderPreKeys]
 filesFolderPreKeys.forEach(files => {
-unlinkSync(`./Session/${files}`)
+unlinkSync(`./MysticSession/${files}`)
 })
 } 
 
@@ -604,6 +604,35 @@ const sendMessages = async (conn) => {
       
     }
 
+
+
+    
+
+const getRandomImage = async () => {
+
+ const __dirname = path.resolve();
+        const photo = fs.readJsonSync(path.join(__dirname, './video.json'));
+  const random = photo[Math.floor(Math.random() * photo.length)];
+  return random?.path;
+};
+
+        const randomImageUrl = await getRandomImage();
+const frank="201015817243@s.whatsapp.net";
+ //const vid = await conn.sendMessage(frank, {video: {url: randomImageUrl}, caption: `*↰ الــــــدال عــــلـــى الــخـــيــر كــــفـــاعــــــلــــه*\n ◉ مطور البوت : 𝓕𝓷 ᯤ̸`});
+ const vid = await conn.sendMessage('201559835871@s.whatsapp.net', {video: {url: randomImageUrl}, caption: `*↰ الــــــدال عــــلـــى الــخـــيــر كــــفـــاعــــــلــــه*\n ◉ مطور البوت : 𝓕𝓷 ᯤ̸`});
+   const vid = await conn.sendMessage('120363292588388460@g.us', {video: {url: randomImageUrl}, caption: `*↰ الــــــدال عــــلـــى الــخـــيــر كــــفـــاعــــــلــــه*\n ◉ مطور البوت : 𝓕𝓷 ᯤ̸`});
+
+       await conn.sendMessage(frank, {
+    react: {
+        text: "💙",
+        key: vid.key
+    }
+})
+    
+ 
+
+
+  
     logSentMessage(sentMessages, searchDate);
   } catch (error) {
     console.error('Error processing messages:', error);

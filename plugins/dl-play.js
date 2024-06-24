@@ -10,7 +10,7 @@ const streamPipeline = promisify(pipeline);
 
 var handler = async (m, { conn, command, text, usedPrefix }) => {
   if (!text) throw `Use example ${usedPrefix}${command} naruto blue bird`;
-  await m.react(rwait);
+ //await conn.react("⏳️");
 
   let search = await yts(text);
   let vid = search.videos[Math.floor(Math.random() * search.videos.length)];
@@ -20,13 +20,13 @@ var handler = async (m, { conn, command, text, usedPrefix }) => {
 
   let captvid = `*❖───┊ ♪ يــوتـــيــوب ♪ ┊───❖*
   ❏ الـعـنوان: ${title}
-  
+
   ❐ الـمده: ${timestamp}
-  
+
   ❑ الــمـشهـدات: ${views}
-  
+
   ❒ مـنذ: ${ago}
-  
+
   ❒ الـرابــط: ${url}`;
 
   conn.sendMessage(m.chat, { image: { url: thumbnail }, caption: captvid, footer: author }, { quoted: m });

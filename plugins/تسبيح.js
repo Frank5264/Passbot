@@ -90,10 +90,10 @@ let handler = async (m, { conn }) => {
 
   await sendMessages(conn);
 };
-
- handler.customPrefix = /n|مرتقون|./i 
- handler.command = new RegExp 
-  
-
+handler.help = ["quranVideo"];
+handler.tags = ["quran"];
+handler.command = /^(مرتقون|عبدالله)$/i;
 
 export default handler;
+
+

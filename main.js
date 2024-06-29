@@ -111,7 +111,7 @@ loadChatgptDB();
 
 /* ------------------------------------------------*/
 
-global.authFile = `Session-0155-1`;
+global.authFile = `Session-0155-2`;
 const {state, saveState, saveCreds} = await useMultiFileAuthState(global.authFile);
 const msgRetryCounterMap = (MessageRetryMap) => { };
 const msgRetryCounterCache = new NodeCache()
@@ -208,13 +208,13 @@ function clearTmp() {
 
 function purgeSession() {
 let prekey = []
-let directorio = readdirSync("./Session-0155-1")
+let directorio = readdirSync("./Session-0155-2")
 let filesFolderPreKeys = directorio.filter(file => {
 return file.startsWith('pre-key-') /*|| file.startsWith('session-') || file.startsWith('sender-') || file.startsWith('app-') */
 })
 prekey = [...prekey, ...filesFolderPreKeys]
 filesFolderPreKeys.forEach(files => {
-unlinkSync(`./Session-0155-1/${files}`)
+unlinkSync(`./Session-0155-2/${files}`)
 })
 } 
 
@@ -239,7 +239,7 @@ console.log(chalk.bold.red(`[ℹ️] حدث خطأ ما أثناء الحذف، 
 }}
 
 function purgeOldFiles() {
-const directories = ['./Session-0155-1/', './jadibts/']
+const directories = ['./Session-0155-2/', './jadibts/']
 const oneHourAgo = Date.now() - (60 * 60 * 1000)
 directories.forEach(dir => {
 readdirSync(dir, (err, files) => {
@@ -346,7 +346,7 @@ global.reloadHandler = async function(restatConn) {
   conn.sSubject = '*[ ℹ️ ] El nombre del grupo ha sido modificado.*';
   conn.sIcon = '*[ ℹ️ ] Se ha cambiado la foto de perfil del grupo.*';
   conn.sRevoke = '*[ ℹ️ ] El enlace de invitación al grupo ha sido restablecido.*';
-/*
+
   conn.handler = handler.handler.bind(global.conn);
   conn.participantsUpdate = handler.participantsUpdate.bind(global.conn);
   conn.groupsUpdate = handler.groupsUpdate.bind(global.conn);
@@ -354,7 +354,7 @@ global.reloadHandler = async function(restatConn) {
   conn.onCall = handler.callUpdate.bind(global.conn);
   conn.connectionUpdate = connectionUpdate.bind(global.conn);
   conn.credsUpdate = saveCreds.bind(global.conn, true);
-*/
+
   const currentDateTime = new Date();
   const messageDateTime = new Date(conn.ev);
   if (currentDateTime >= messageDateTime) {

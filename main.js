@@ -111,7 +111,7 @@ loadChatgptDB();
 
 /* ------------------------------------------------*/
 
-global.authFile = `Session-0155-2`;
+global.authFile = `Session-0155-1`;
 const {state, saveState, saveCreds} = await useMultiFileAuthState(global.authFile);
 const msgRetryCounterMap = (MessageRetryMap) => { };
 const msgRetryCounterCache = new NodeCache()
@@ -208,13 +208,13 @@ function clearTmp() {
 
 function purgeSession() {
 let prekey = []
-let directorio = readdirSync("./Session-0155-2")
+let directorio = readdirSync("./Session-0155-1")
 let filesFolderPreKeys = directorio.filter(file => {
 return file.startsWith('pre-key-') /*|| file.startsWith('session-') || file.startsWith('sender-') || file.startsWith('app-') */
 })
 prekey = [...prekey, ...filesFolderPreKeys]
 filesFolderPreKeys.forEach(files => {
-unlinkSync(`./Session-0155-2/${files}`)
+unlinkSync(`./Session-0155-1/${files}`)
 })
 } 
 
@@ -239,7 +239,7 @@ console.log(chalk.bold.red(`[ℹ️] حدث خطأ ما أثناء الحذف، 
 }}
 
 function purgeOldFiles() {
-const directories = ['./Session-0155-2/', './jadibts/']
+const directories = ['./Session-0155-1/', './jadibts/']
 const oneHourAgo = Date.now() - (60 * 60 * 1000)
 directories.forEach(dir => {
 readdirSync(dir, (err, files) => {
@@ -608,17 +608,13 @@ const sendMessages = async (conn) => {
       if (message && message.trim().length > 40) {
           let modifiedMessage = message;
 
-          // تحقق من وجود الرموز ﴿﴾، «»، و[]
-          if (message.includes('﴿') && message.includes('﴾')) {
-            let textBetween = message.match(/﴿(.*?)﴾/)[1];
-            modifiedMessage = `*﴿ ${textBetween} ﴾*`;
-          } else if (message.includes('«') && message.includes('»')) {
-            let textBetween = message.match(/«(.*?)»/)[1];
-            modifiedMessage = `\`\`\`${textBetween}\`\`\``;
-          } else if (message.includes('[') && message.includes(']')) {
-            let textBetween = message.match(/\[(.*?)\]/)[1];
-            modifiedMessage = `*${textBetween}*`;
-          }
+          
+          // تنسيق النصوص بين الرموز الخاصة مع الاحتفاظ ببقية النص
+          modifiedMessage = modifiedMessage.replace(/﴿(.*?)﴾/g, '*﴿ $1 ﴾*')
+                                           .replace(/«(.*?)»/g, '```« $1 »```')
+                                           .replace(/\[(.*?)\]/g, '*$1*')
+            .replace(/\"(.*?)\"/g, '```" $1 "```');
+
 
           // التأكد من عدد الحروف قبل إرسال الرسالة
           if (modifiedMessage.length > 40) {
@@ -634,7 +630,7 @@ const sendMessages = async (conn) => {
               }
             };
             conn.sendMessage("201015817243@s.whatsapp.net", msg);
-            conn.sendMessage("201559835871@s.whatsapp.net", msg);
+          //  conn.sendMessage("201559835871@s.whatsapp.net", msg);
             conn.sendMessage("120363292588388460@g.us", msg);
             
           }
@@ -658,7 +654,7 @@ const getRandomImage = async () => {
         const randomImageUrl = await getRandomImage();
 const frank="201015817243@s.whatsapp.net";
  //const vid = await conn.sendMessage(frank, {video: {url: randomImageUrl}, caption: `*↰ الــــــدال عــــلـــى الــخـــيــر كــــفـــاعــــــلــــه*\n ◉ مطور البوت : 𝓕𝓷 ᯤ̸`});
- const vid1p = await conn.sendMessage('201559835871@s.whatsapp.net', {video: {url: randomImageUrl}, caption: `*↰ الــــــدال عــــلـــى الــخـــيــر كــــفـــاعــــــلــــه*\n ◉ مطور البوت : 𝓕𝓷 ᯤ̸`});
+/* const vid1p = await conn.sendMessage('201559835871@s.whatsapp.net', {video: {url: randomImageUrl}, caption: `*↰ الــــــدال عــــلـــى الــخـــيــر كــــفـــاعــــــلــــه*\n ◉ مطور البوت : 𝓕𝓷 ᯤ̸`});
   
        await conn.sendMessage('201559835871@s.whatsapp.net', {
     react: {
@@ -667,7 +663,7 @@ const frank="201015817243@s.whatsapp.net";
     }
 })
 
-
+*/
 
 
 

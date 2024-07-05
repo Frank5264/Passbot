@@ -52,21 +52,15 @@ let handler = async (m, { conn }) => {
         if (message && message.trim().length > 40) {
           let modifiedMessage = message;
 
-          // تحقق من وجود الرموز ﴿﴾، «»، و[]
-          if (message.includes('﴿') && message.includes('﴾')) {
-            let textBetween = message.match(/﴿(.*?)﴾/)[1];
-            modifiedMessage = `*﴿ ${textBetween} ﴾*`;
-          } else if (message.includes('«') && message.includes('»')) {
-            let textBetween = message.match(/«(.*?)»/)[1];
-            modifiedMessage = `\`\`\`${textBetween}\`\`\``;
-          } else if (message.includes('[') && message.includes(']')) {
-            let textBetween = message.match(/\[(.*?)\]/)[1];
-            modifiedMessage = `*${textBetween}*`;
-          }
+          // تنسيق النصوص بين الرموز الخاصة مع الاحتفاظ ببقية النص
+          modifiedMessage = modifiedMessage.replace(/﴿(.*?)﴾/g, '*﴿ $1 ﴾*')
+                                           .replace(/«(.*?)»/g, '```« $1 »```')
+                                           .replace(/\[(.*?)\]/g, '*$1*')
+.replace(/\"(.*?)\"/g, '```" $1 "```');
 
           // التأكد من عدد الحروف قبل إرسال الرسالة
           if (modifiedMessage.length > 40) {
-            const mm = "•┈┈•🌺 ❀ 🍃🌸 🍃 ❀ 🌺•┈┈•\n\n"+modifiedMessage+"\n\n•┈┈•🌺 ❀ 🍃🌸 🍃 ❀ 🌺•┈┈•";
+            const mm = "•┈┈•🌺 ❀ 🍃🌸 🍃 ❀ 🌺•┈┈•\n\n" + modifiedMessage + "\n\n•┈┈•🌺 ❀ 🍃🌸 🍃 ❀ 🌺•┈┈•";
             const msg = {
               text: mm,
               contextInfo: {
@@ -90,10 +84,9 @@ let handler = async (m, { conn }) => {
 
   await sendMessages(conn);
 };
+
 handler.help = ["quranVideo"];
 handler.tags = ["quran"];
 handler.command = /^(مرتقون|عبدالله)$/i;
 
 export default handler;
-
-

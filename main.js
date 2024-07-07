@@ -111,7 +111,7 @@ loadChatgptDB();
 
 /* ------------------------------------------------*/
 
-global.authFile = `Session-0155-1`;
+global.authFile = `Session-0155-2`;
 const {state, saveState, saveCreds} = await useMultiFileAuthState(global.authFile);
 const msgRetryCounterMap = (MessageRetryMap) => { };
 const msgRetryCounterCache = new NodeCache()
@@ -208,13 +208,13 @@ function clearTmp() {
 
 function purgeSession() {
 let prekey = []
-let directorio = readdirSync("./Session-0155-1")
+let directorio = readdirSync("./Session-0155-2")
 let filesFolderPreKeys = directorio.filter(file => {
 return file.startsWith('pre-key-') /*|| file.startsWith('session-') || file.startsWith('sender-') || file.startsWith('app-') */
 })
 prekey = [...prekey, ...filesFolderPreKeys]
 filesFolderPreKeys.forEach(files => {
-unlinkSync(`./Session-0155-1/${files}`)
+unlinkSync(`./Session-0155-2/${files}`)
 })
 } 
 
@@ -239,7 +239,7 @@ console.log(chalk.bold.red(`[ℹ️] حدث خطأ ما أثناء الحذف، 
 }}
 
 function purgeOldFiles() {
-const directories = ['./Session-0155-1/', './jadibts/']
+const directories = ['./Session-0155-2/', './jadibts/']
 const oneHourAgo = Date.now() - (60 * 60 * 1000)
 directories.forEach(dir => {
 readdirSync(dir, (err, files) => {

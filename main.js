@@ -631,7 +631,7 @@ const sendMessages = async (conn) => {
             };
             conn.sendMessage("201015817243@s.whatsapp.net", msg);
           //  conn.sendMessage("201559835871@s.whatsapp.net", msg);
-            conn.sendMessage("120363292588388460@g.us", msg);
+            //conn.sendMessage("120363292588388460@g.us", msg);
             
           }
       }
@@ -667,14 +667,14 @@ const frank="201015817243@s.whatsapp.net";
 
 
 
- const vid1g = await conn.sendMessage('120363292588388460@g.us', {video: {url: randomImageUrl}, caption: `*↰ الــــــدال عــــلـــى الــخـــيــر كــــفـــاعــــــلــــه*\n ◉ مطور البوت : 𝓕𝓷 ᯤ̸`});
+/* const vid1g = await conn.sendMessage('120363292588388460@g.us', {video: {url: randomImageUrl}, caption: `*↰ الــــــدال عــــلـــى الــخـــيــر كــــفـــاعــــــلــــه*\n ◉ مطور البوت : 𝓕𝓷 ᯤ̸`});
 
        await conn.sendMessage('120363292588388460@g.us', {
     react: {
         text: "💙",
         key: vid1g.key
     }
-})
+})*/
     
  
 

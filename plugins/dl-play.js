@@ -11,7 +11,7 @@ const streamPipeline = promisify(pipeline);
 var handler = async (m, { conn, command, text, usedPrefix }) => {
   if (!text) throw `Use example ${usedPrefix}${command} naruto blue bird`;
  //await conn.react("⏳️");
-let texttt = `سورة ${text} للقارئ اسلام صبحي`;
+let texttt = `سورة ${text} بصوت محمود خليل الحصري`;
   let search = await yts(texttt);
   let vid = search.videos[Math.floor(Math.random() * search.videos.length)];
   if (!search) throw 'Video Not Found, Try Another Title';
